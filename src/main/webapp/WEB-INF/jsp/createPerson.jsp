@@ -10,13 +10,15 @@
 <title>Hello</title>
 </head>
 <body>
-<form:form modelAttribute="hello" action="hello">
-	<p>What's your name? <form:input path="name"/>
-	<p><input type="submit"/>
+<form:form modelAttribute="person" action="savePerson" method="POST">
+
+	<p>Name: <form:input path="name"/></p>
+
+	<p><input type="submit" value="Save"/>
 	
 	<br/>
-	<p><c:if test="${!empty hello.name}">Hello <c:out value="${hello.name}"/>
-	</c:if> </p>
+	
+	<p><c:if test="${!empty person.name}">Person <c:out value="${person.name}"/> created.</c:if> </p>
 </form:form>
 </body>
 </html>

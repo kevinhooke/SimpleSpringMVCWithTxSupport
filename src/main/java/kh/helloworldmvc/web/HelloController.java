@@ -1,24 +1,28 @@
 package kh.helloworldmvc.web;
 
-import kh.helloworldmvc.domain.HelloBean;
+import kh.helloworldmvc.domain.Person;
+import kh.helloworldmvc.service.PersonService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
- * Simple controller to illustrate @RequestMapping usage.
+ * Simple Spring MVC controller with an injected service.
  * 
  * @author Kevin Hooke
  */
 @Controller
 public class HelloController {
 
-	 @ModelAttribute("hello")
-	 public HelloBean getHelloObject() {
-	  return new HelloBean();
+	@Autowired
+	private PersonService personService;
+	
+	 @ModelAttribute("person")
+	 public Person getPersonModel() {
+	  return new Person();
 	 }
 	
 	@RequestMapping("/hello")
@@ -27,17 +31,26 @@ public class HelloController {
 		return "hello";
 	}
 	
-	@RequestMapping(value = "/hello", method = RequestMethod.POST)
-	public String helloPerson( @ModelAttribute("hello") HelloBean hello )
+	@RequestMapping("/createPerson")
+	public String createPerson()
 	{
-	    //Explicit approach to adding a named bean into your Model
-	    //Don't need this step here since we already bound the bean by mapping it in the params
-	    //ModelAndView mv = new ModelAndView();
-	    //mv.addObject("hello", hello);
-	    //return mv;
-	    
-	    return "hello";
+		return "createPerson";
 	}
 	
+	@RequestMapping(value = "/hello", method = RequestMethod.POST)
+	public String helloPerson( @ModelAttribute("person") Person person )
+	{	    
+	    return "hello";
+	}
+
+	@RequestMapping(value = "/savePerson", method = RequestMethod.POST)
+	public String savePerson( @ModelAttribute("person") Person person )
+	{
+	    
+		this.personService.savePerson(person);
+		
+	    return "createPerson";
+	}
+
 	
 }
